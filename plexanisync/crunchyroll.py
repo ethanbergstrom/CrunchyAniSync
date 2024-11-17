@@ -45,11 +45,10 @@ class Crunchyroll:
 
         for show_id, season_ids in show_ids.items():
             show = await client.get_series(show_id)
-
-            show_seasons = [season for season in await client.get_seasons(show_id) if season.id in season_ids]
+            show_seasons = await client.get_seasons(show_id)
 
             seasons = []
-            for season in show_seasons:
+            for season in [season for season in show_seasons.items if season.id in season_ids]:
                 all_episodes_of_season = await client.get_episodes(season.id)
 
                 # Crunchyroll sometimes inconsistently numbers their episodes within a season, so we cant use max episode number like we do with Plex
