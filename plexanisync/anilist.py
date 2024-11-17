@@ -151,7 +151,6 @@ class Anilist:
                     plex_title_without_year = re.sub(r"\(\d{4}\)", "", plex_title).strip()
                     plex_title_sort_without_year = re.sub(r"\(\d{4}\)", "", plex_title_sort).strip()
                     plex_title_original_without_year = re.sub(r"\(\d{4}\)", "", plex_title_original).strip()
-                    plex_title_original_with_year = plex_title_original + " (" + str(plex_year) + ")"  # ex: Rurouni Kenshin (2023)
 
                     potential_titles = [
                         plex_title.lower(),
@@ -163,7 +162,6 @@ class Anilist:
                         plex_title_without_year,
                         plex_title_sort_without_year,
                         plex_title_original_without_year,
-                        plex_title_original_with_year,
                     ]
 
                     # Remove duplicates from potential title list
@@ -215,7 +213,6 @@ class Anilist:
                             plex_title_without_year,
                             plex_title_sort_without_year,
                             plex_title_original_without_year,
-                            plex_title_original_with_year,
                         ]
 
                         # Remove duplicates from potential title list
