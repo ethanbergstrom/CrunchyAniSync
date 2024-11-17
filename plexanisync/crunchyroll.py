@@ -3,6 +3,8 @@ from configparser import SectionProxy
 import logging
 from typing import List, Optional
 
+import crunpyroll.types
+
 from plexanisync.logger_adapter import PrefixLoggerAdapter
 from plexanisync.plexmodule import PlexWatchedSeries, PlexSeason
 
@@ -12,14 +14,15 @@ from collections import defaultdict
 
 logger = PrefixLoggerAdapter(logging.getLogger("PlexAniSync"), {"prefix": "CRUNCHYROLL"})
 
+
 class Crunchyroll:
     def __init__(self, settings: SectionProxy):
         self.settings = settings
 
     async def __authenticate(self) -> crunpyroll.Client:
         client = crunpyroll.Client(
-            email = self.settings['email'],
-            password = self.settings['password']
+            email=self.settings['email'],
+            password=self.settings['password']
         )
 
         await client.start()
@@ -46,7 +49,7 @@ class Crunchyroll:
             all_show_seasons = await client.get_seasons(show_id)
 
             # Filter series seasons to ones we've seen based on watch history
-            show_seasons: filter[Season] = filter(
+            show_seasons: filter[crunpyroll.types.Season] = filter(
                 lambda season: season.id in season_ids,
                 all_show_seasons.items
             )
@@ -65,7 +68,7 @@ class Crunchyroll:
                 seasons.append(
                     PlexSeason(
                         int(season.season_sequence_number or season.season_number),
-                        0, # self.__get_plex_rating(season.userRating),
+                        0,  # self.__get_plex_rating(season.userRating),
                         season_watchcount,
                         all_episodes_of_season.items[0].episode_number,
                         all_episodes_of_season.items[-1].episode_number,
@@ -79,13 +82,13 @@ class Crunchyroll:
                 show.title.strip(),
                 show.id,
                 min(
-                    [viewing.episode.air_date.year for viewing in history if viewing.episode.series_id == show.id and viewing.episode.air_date is not None] or 
-                    [viewing.episode.premium_available_date.year for viewing in history if viewing.episode.series_id == show.id and viewing.episode.premium_available_date is not None] or 
-                    [show.launch_year]
+                    [viewing.episode.air_date.year for viewing in history if viewing.episode.series_id == show.id and viewing.episode.air_date is not None]
+                    or [viewing.episode.premium_available_date.year for viewing in history if viewing.episode.series_id == show.id and viewing.episode.premium_available_date is not None]
+                    or [show.launch_year]
                 ),
                 seasons,
                 None,
-                0 # self.__get_plex_rating(show.userRating)
+                0  # self.__get_plex_rating(show.userRating)
             )
             watched_series.append(watched_show)
 
