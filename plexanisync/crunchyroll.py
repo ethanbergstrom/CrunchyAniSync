@@ -78,7 +78,8 @@ class Crunchyroll:
                         0, # self.__get_plex_rating(season.userRating),
                         season_watchcount,
                         all_episodes_of_season.items[0].episode_number,
-                        all_episodes_of_season.items[-1].episode_number
+                        all_episodes_of_season.items[-1].episode_number,
+                        season.title
                     )
                 )
 

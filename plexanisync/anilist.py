@@ -283,7 +283,7 @@ class Anilist:
                     else:
                         if plex_year:
                             media_id_search = self.__find_id_season_best_match(
-                                plex_title, season_number, plex_year
+                                plex_title, season_number, plex_year, plex_season.title
                             )
                         else:
                             logger.error(
@@ -339,7 +339,7 @@ class Anilist:
                 if series not in matched_anilist_series:
                     matched_anilist_series.append(series)
 
-    def __find_id_season_best_match(self, title: str, season: int, year: int) -> Optional[int]:
+    def __find_id_season_best_match(self, title: str, season: int, year: int, season_title: str) -> Optional[int]:
         media_id = None
         # logger.warning('Searching  AniList for title: %s | season: %s' % (title, season))
         match_title = self.__clean_title(title)
@@ -377,6 +377,7 @@ class Anilist:
             match_title_season_suffix4.lower().strip(),
             match_title_season_suffix5.lower().strip(),
             match_title_season_suffix6.lower().strip(),
+            season_title.lower().strip()
         ]
 
         matches = self.graphql.search_by_name(title)

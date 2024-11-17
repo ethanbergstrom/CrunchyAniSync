@@ -25,6 +25,7 @@ class PlexSeason:
     watched_episodes: int
     first_episode: int
     last_episode: int
+    title: str
 
 
 @dataclass
@@ -194,7 +195,8 @@ class PlexModule:
                                 self.__get_plex_rating(season.userRating),
                                 season_watchcount,
                                 season_firstepisode,
-                                season_lastepisode
+                                season_lastepisode,
+                                season.parentTitle
                             )
                         )
 
