@@ -27,3 +27,7 @@ skip_list_update = False
 username = SomeUsername
 log_failed_matches = False
 sync_ratings = False
+
+[CRUNCHYROLL]
+email = SomeEmailAddress
+password = abcdef123456789

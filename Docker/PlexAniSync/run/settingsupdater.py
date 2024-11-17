@@ -19,5 +19,10 @@ config['ANILIST'] = {
     'sync_ratings': os.environ.get('SYNC_RATINGS') or False
 }
 
+config['CRUNCHYROLL'] = {
+    'email': os.environ.get('CRUNCHYROLL_EMAIL'),
+    'password': os.environ.get('CRUNCHYROLL_PASSWORD')
+}
+
 with open('/plexanisync/settings.ini', 'w', encoding="UTF-8") as configfile:
     config.write(configfile)

@@ -1,4 +1,5 @@
 # coding=utf-8
+import asyncio
 import configparser
 import logging
 from logging.handlers import RotatingFileHandler
@@ -10,6 +11,7 @@ import coloredlogs
 from plexanisync.anilist import Anilist
 from plexanisync.custom_mappings import read_custom_mappings
 from plexanisync.plexmodule import PlexModule
+from plexanisync.crunchyroll import Crunchyroll
 from plexanisync._version import __version__
 
 # Logger settings
@@ -57,11 +59,12 @@ if len(sys.argv) > 1:
 
 settings = read_settings(SETTINGS_FILE)
 anilist_settings = settings["ANILIST"]
-plex_settings = settings["PLEX"]
+# plex_settings = settings["PLEX"]
+crunchyroll_settings = settings["CRUNCHYROLL"]
 
 
 ## Startup section ##
-def start():
+async def start():
     logger.info(f"PlexAniSync - version: {__version__}")
 
     custom_mappings = read_custom_mappings()
@@ -85,22 +88,31 @@ def start():
             "Unable to retrieve AniList list, check your username and access token"
         )
     else:
-        plexmodule = PlexModule(plex_settings)
-        plex_anime_series = plexmodule.get_anime_shows()
+        # plexmodule = PlexModule(plex_settings)
+        # plex_anime_series = plexmodule.get_anime_shows()
 
-        if plex_anime_series is None:
-            logger.error("Found no Plex shows for processing")
-            plex_series_watched = None
-        else:
-            plex_series_watched = plexmodule.get_watched_shows(plex_anime_series)
+        # if plex_anime_series is None:
+        #     logger.error("Found no Plex shows for processing")
+        #     plex_series_watched = None
+        # else:
+        #     plex_series_watched = plexmodule.get_watched_shows(plex_anime_series)
 
-        if plex_series_watched is None:
-            logger.error("Found no watched shows on Plex for processing")
+        # if plex_series_watched is None:
+        #     logger.error("Found no watched shows on Plex for processing")
+        # else:
+        #     anilist.match_to_plex(anilist_series, plex_series_watched)
+
+        crunchyroll = Crunchyroll(crunchyroll_settings)
+
+        crunchyroll_series_watched = await crunchyroll.get_watched_shows()
+
+        if crunchyroll_series_watched is None:
+            logger.error("Found no watched shows on Crunchyroll for processing")
         else:
-            anilist.match_to_plex(anilist_series, plex_series_watched)
+            print("Syncing to Anilist")
+            anilist.match_to_plex(anilist_series, crunchyroll_series_watched)
 
     logger.info("Plex to AniList sync finished")
 
-
 if __name__ == "__main__":
-    start()
+    asyncio.run(start())
