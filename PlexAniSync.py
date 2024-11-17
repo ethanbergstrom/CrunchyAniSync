@@ -59,7 +59,7 @@ if len(sys.argv) > 1:
 
 settings = read_settings(SETTINGS_FILE)
 anilist_settings = settings["ANILIST"]
-# plex_settings = settings["PLEX"]
+plex_settings = settings["PLEX"]
 crunchyroll_settings = settings["CRUNCHYROLL"]
 
 
@@ -88,19 +88,19 @@ async def start():
             "Unable to retrieve AniList list, check your username and access token"
         )
     else:
-        # plexmodule = PlexModule(plex_settings)
-        # plex_anime_series = plexmodule.get_anime_shows()
+        plexmodule = PlexModule(plex_settings)
+        plex_anime_series = plexmodule.get_anime_shows()
 
-        # if plex_anime_series is None:
-        #     logger.error("Found no Plex shows for processing")
-        #     plex_series_watched = None
-        # else:
-        #     plex_series_watched = plexmodule.get_watched_shows(plex_anime_series)
+        if plex_anime_series is None:
+            logger.error("Found no Plex shows for processing")
+            plex_series_watched = None
+        else:
+            plex_series_watched = plexmodule.get_watched_shows(plex_anime_series)
 
-        # if plex_series_watched is None:
-        #     logger.error("Found no watched shows on Plex for processing")
-        # else:
-        #     anilist.match_to_plex(anilist_series, plex_series_watched)
+        if plex_series_watched is None:
+            logger.error("Found no watched shows on Plex for processing")
+        else:
+            anilist.match_to_plex(anilist_series, plex_series_watched)
 
         crunchyroll = Crunchyroll(crunchyroll_settings)
 
