@@ -334,7 +334,7 @@ class Anilist:
         self, series: AnilistSeries, potential_titles: List[str], matched_anilist_series: List[AnilistSeries]
     ):
         for title in series.titles():
-            if (title.lower() in potential_titles
+            if (title.lower() in [potential_title.lower() for potential_title in potential_titles]
                     or self.__clean_title(title) in potential_titles):
                 if series not in matched_anilist_series:
                     matched_anilist_series.append(series)
