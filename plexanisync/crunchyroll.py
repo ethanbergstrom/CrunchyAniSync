@@ -68,7 +68,8 @@ class Crunchyroll:
             for season in show_seasons:
                 all_episodes_of_season = await client.get_episodes(season.id)
 
-                season_watchcount = max([viewing.episode.episode_number for viewing in history if viewing.episode.season_id == season.id and viewing.episode.episode_number is not None] or [0])
+                # Crunchyroll sometimes inconsistently numbers their episodes within a season, so we cant use max episode number like we do with Plex
+                season_watchcount = len([viewing.episode.episode_number for viewing in history if viewing.episode.season_id == season.id and viewing.episode.episode_number is not None] or [0])
 
                 logger.debug(f'{season_watchcount} episodes watched for {show.title} season {season.season_number}')
 
@@ -88,7 +89,11 @@ class Crunchyroll:
                 show.title.strip(),
                 show.title.strip(),
                 show.id,
-                min([viewing.episode.premium_available_date.year for viewing in history if viewing.episode.series_id == show.id and viewing.episode.premium_available_date.year is not None] or [show.launch_year]),
+                min(
+                    [viewing.episode.air_date.year for viewing in history if viewing.episode.series_id == show.id and viewing.episode.air_date is not None] or 
+                    [viewing.episode.premium_available_date.year for viewing in history if viewing.episode.series_id == show.id and viewing.episode.premium_available_date is not None] or 
+                    [show.launch_year]
+                ),
                 seasons,
                 None,
                 0 # self.__get_plex_rating(show.userRating)
