@@ -1,23 +1,12 @@
 # coding=utf-8
 from configparser import SectionProxy
 import logging
-import re
-import sys
-from dataclasses import dataclass
 from typing import List, Optional
-
-from plexapi.myplex import MyPlexAccount
-from plexapi.server import PlexServer
-from plexapi.video import Episode, Season, Show
-from requests import Session
-from requests.adapters import HTTPAdapter
-from urllib3.poolmanager import PoolManager
 
 from plexanisync.logger_adapter import PrefixLoggerAdapter
 from plexanisync.plexmodule import PlexWatchedSeries, PlexSeason
 
 import crunpyroll
-import asyncio
 
 from collections import defaultdict
 
