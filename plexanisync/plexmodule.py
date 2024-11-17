@@ -265,7 +265,7 @@ class PlexModule:
                             show.originalTitle.strip(),
                             show.guid,
                             year,
-                            [PlexSeason(1, rating, 1, 1, 1)],
+                            [PlexSeason(1, rating, 1, 1, 1, show.title.strip())],
                             anilist_id,
                             rating
                         )

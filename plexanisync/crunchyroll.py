@@ -46,15 +46,7 @@ class Crunchyroll:
         for show_id, season_ids in show_ids.items():
             show = await client.get_series(show_id)
 
-            all_show_seasons = await client.get_seasons(show_id)
-
-            # Filter series seasons to ones we've seen based on watch history
-            show_seasons: filter[crunpyroll.types.Season] = filter(
-                lambda season: season.id in season_ids,
-                all_show_seasons.items
-            )
-
-            # show_seasons = [season for season in await client.get_seasons(show_id) if season.id in season_ids]
+            show_seasons = [season for season in await client.get_seasons(show_id) if season.id in season_ids]
 
             seasons = []
             for season in show_seasons:
