@@ -12,6 +12,9 @@ import crunpyroll
 
 from collections import defaultdict
 
+import uuid
+import hashlib
+
 logger = PrefixLoggerAdapter(logging.getLogger("PlexAniSync"), {"prefix": "CRUNCHYROLL"})
 
 
@@ -22,7 +25,11 @@ class Crunchyroll:
     async def __authenticate(self) -> crunpyroll.Client:
         client = crunpyroll.Client(
             email=self.settings['email'],
-            password=self.settings['password']
+            password=self.settings['password'],
+            # Encode the username to a consistent user-specific device ID
+            device_id=uuid.UUID(hex=hashlib.md5(self.settings['email'].encode("UTF-8")).hexdigest()),
+            device_name='PlexAniSync',
+            device_type='Python'
         )
 
         await client.start()
