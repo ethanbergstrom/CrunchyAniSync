@@ -2,7 +2,7 @@ attrs==23.2.0
 certifi==2024.8.30
 charset-normalizer==3.4.0
 coloredlogs==15.0.1
-crunpyroll @ git+https://github.com/ethanbergstrom/crunpyroll
+crunpyroll @ git+https://github.com/ethanbergstrom/crunpyroll@1be17f7673a6eb63d3f0c90f2f9066436b227e3f
 distro==1.9.0
 humanfriendly==10.0
 idna==3.10
