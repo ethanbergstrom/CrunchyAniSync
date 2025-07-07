@@ -74,6 +74,20 @@ class Crunchyroll:
                     )
                 )
 
+            # We clearly watched SOMETHING, so for there to be no season data is a goof on Crunchyroll's end. Stub out a generic Season 1.
+            if not seasons:
+                logger.debug(f'Crunchyroll has not linked the show to the episode season. Inferring a Season 1...')
+                seasons.append(
+                    PlexSeason(
+                        int(1),
+                        0,  # self.__get_plex_rating(season.userRating),
+                        len([viewing.episode.episode_number for viewing in history if viewing.episode.series_id == show_id and viewing.episode.episode_number is not None] or [0]),
+                        all_episodes_of_season.items[0].episode_number,
+                        show.episode_count,
+                        show.title
+                    )
+                )
+
             watched_show = PlexWatchedSeries(
                 show.title.strip(),
                 show.title.strip(),
