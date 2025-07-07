@@ -76,7 +76,7 @@ class Crunchyroll:
 
             # We clearly watched SOMETHING, so for there to be no season data is a goof on Crunchyroll's end. Stub out a generic Season 1.
             if not seasons:
-                logger.debug(f'Crunchyroll has not linked the show to the episode season. Inferring a Season 1...')
+                logger.debug('Crunchyroll has not linked the show to the episode season. Inferring a Season 1...')
                 seasons.append(
                     PlexSeason(
                         int(1),
