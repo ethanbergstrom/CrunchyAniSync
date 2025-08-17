@@ -1,7 +1,7 @@
 # coding=utf-8
 from configparser import SectionProxy
 import logging
-from typing import List, Optional, Set
+from typing import List, Optional
 
 import crunpyroll.types
 
@@ -55,15 +55,10 @@ class Crunchyroll:
             en_seasons = await client.get_seasons(show_id, preferred_audio_language="en-US")
             jp_seasons = await client.get_seasons(show_id, preferred_audio_language="ja-JP")
 
-            seen: Set[str] = set()
-            unique_seasons = []
-            for s in en_seasons.items + jp_seasons.items:
-                if s.id not in seen:  # or another unique property
-                    seen.add(s.id)
-                    unique_seasons.append(s)
+            unique_seasons = {s.id: s for s in en_seasons.items + jp_seasons.items}
 
             seasons = []
-            for season in [season for season in unique_seasons if season.id in season_ids]:
+            for season in [season for season in unique_seasons.values() if season.id in season_ids]:
                 all_episodes_of_season = await client.get_episodes(season.id)
 
                 # Crunchyroll sometimes inconsistently numbers their episodes within a season, so we cant use max episode number like we do with Plex
